@@ -10,7 +10,7 @@ const app = express();
 initDb();
 
 app.use(express.json());
-app.use("/api", router);
+app.use("/api/v1", router);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
