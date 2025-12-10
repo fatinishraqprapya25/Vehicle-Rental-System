@@ -1,10 +1,10 @@
-import config from "../config";
-import { pool } from "../config/db";
+import config from "../../config";
+import { pool } from "../../config/db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import AppError from "../utils/AppError";
+import AppError from "../../utils/AppError";
 
-const authServices: Record<string, unknown> = {};
+const authServices: any = {};
 
 interface UserData {
     name: string;
