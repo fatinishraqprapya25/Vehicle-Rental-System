@@ -3,8 +3,11 @@ import config from "./config";
 import router from "./routes";
 import notFoundHandler from "./middlewares/notFoundHandler";
 import errorHandler from "./middlewares/errorHandler";
+import initDb from "./config/db";
 
 const app = express();
+
+initDb();
 
 app.use(express.json());
 app.use("/api", router);

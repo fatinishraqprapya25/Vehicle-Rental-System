@@ -6,8 +6,9 @@ dotenv.config({
 });
 
 const config = {
-    port: process.env.PORT,
-    connectionStr: process.env.CONNECTION_STR
+    port: Number(process.env.PORT),
+    connectionStr: process.env.CONNECTION_STR,
+    bcryptCircleCount: Number(process.env.BCRYPT_CIRCLE_COUNT)
 }
 
 export default config;

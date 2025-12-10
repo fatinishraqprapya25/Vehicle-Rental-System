@@ -16,7 +16,7 @@ const initDb = async () => {
         phone VARCHAR(16) NOT NULL,
         role VARCHAR(50) NOT NULL DEFAULT 'customer'
         )
-        `)
+        `);
 }
 
 
