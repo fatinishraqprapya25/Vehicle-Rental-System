@@ -14,7 +14,7 @@ authControllers.register = async (req: Request, res: Response) => {
                 message: "Failed to register a user!"
             })
         }
-        sendResponse(res, 200, {
+        sendResponse(res, 201, {
             success: true,
             message: "User registered successfully!",
             data: user
