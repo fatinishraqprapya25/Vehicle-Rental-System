@@ -46,5 +46,23 @@ vehicleControllers.getAllVehicles = async (req: Request, res: Response) => {
     }
 }
 
+vehicleControllers.getVehicleById = async (req: Request, res: Response) => {
+    try {
+        const vehicleId = req.params.id;
+        const result = await vehicleServices.getVehicleById(vehicleId);
+        sendResponse(res, 200, {
+            success: true,
+            message: "Vehicle retrieved successfully!",
+            data: result
+        });
+    } catch (error: any) {
+        sendResponse(res, 500, {
+            success: false,
+            message: error.message,
+            error
+        });
+    }
+}
+
 
 export default vehicleControllers;
