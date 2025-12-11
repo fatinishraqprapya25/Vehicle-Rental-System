@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import sendResponse from "../utils/sendResponse";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
 import showUnauthenciatedMsg from "../utils/showUnauthenticatedMsg";
