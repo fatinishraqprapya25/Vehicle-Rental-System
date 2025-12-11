@@ -1,14 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import sendResponse from "../utils/sendResponse";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
-
-const showUnauthenciatedMsg = (res: Response, message: string) => {
-    sendResponse(res, 403, {
-        success: false,
-        message
-    });
-}
+import showUnauthenciatedMsg from "../utils/showUnauthenticatedMsg";
 
 const checkUser = async (req: Request, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
