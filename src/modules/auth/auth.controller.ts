@@ -41,7 +41,7 @@ authControllers.login = async (req: Request, res: Response) => {
         const { token, data } = user;
         sendResponse(res, 200, {
             success: true,
-            message: "User logged in successfully!",
+            message: "Login successful",
             data,
             token
         });
