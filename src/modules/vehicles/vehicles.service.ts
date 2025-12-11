@@ -24,6 +24,9 @@ vehicleServices.getAllVehicles = async () => {
     return result.rows;
 }
 
-
+vehicleServices.geVehicleById = async (vehicleId: string) => {
+    const result = await pool.query("SELECT * FROM vehicles WHERE id=$1", [vehicleId]);
+    return result.rows[0];
+}
 
 export default vehicleServices;
