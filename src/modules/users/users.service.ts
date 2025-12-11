@@ -1,11 +1,15 @@
 import { pool } from "../../config/db";
 
-const userServices: any = {};
+const usersServices: any = {};
 
-userServices.getAllUsers = async () => {
+usersServices.getAllUsers = async () => {
     const result = await pool.query(`SELECT * FROM users`);
     return result;
 }
 
+usersServices.getUserById = async (userId: string) => {
+    const result = await pool.query(`SELECT * FROM users WHERE id=$1`, [userId]);
+    return result;
+}
 
-export default userServices;
+export default usersServices;
