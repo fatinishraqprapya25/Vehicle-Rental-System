@@ -49,3 +49,23 @@ userControllers.updateUser = async (req: Request, res: Response) => {
         });
     }
 }
+
+userControllers.deleteUser = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.id;
+        const result = await usersServices.deleteUser(userId);
+        sendResponse(res, 200, {
+            success: true,
+            message: "user deleted successfully!",
+            data: result
+        });
+    } catch (error: any) {
+        sendResponse(res, 500, {
+            success: false,
+            message: error.message,
+            error
+        });
+    }
+}
+
+export default userControllers;
