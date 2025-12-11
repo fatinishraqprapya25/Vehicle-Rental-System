@@ -57,7 +57,6 @@ userControllers.deleteUser = async (req: Request, res: Response) => {
         sendResponse(res, 200, {
             success: true,
             message: "user deleted successfully!",
-            data: result
         });
     } catch (error: any) {
         sendResponse(res, 500, {

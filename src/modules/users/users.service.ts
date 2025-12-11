@@ -1,4 +1,5 @@
 import { pool } from "../../config/db";
+import AppError from "../../utils/AppError";
 
 const usersServices: any = {};
 
@@ -14,13 +15,13 @@ type OptionalUser = Partial<User>;
 
 usersServices.getAllUsers = async () => {
     const result = await pool.query(`SELECT * FROM users`);
-    return result;
+    return result.rows;
 }
 
 usersServices.updateUser = async (userId: string, userData: OptionalUser) => {
-    const length = Object.keys(userData).length;
+    const length = typeof userData === "object" ? Object.keys(userData).length : 0;
     if (length === 0) {
-        return null;
+        throw new AppError(400, "Please provide proper informations to update user!");
     }
     const setQuery = Object.keys(userData).map((key, index) => `${key}=$${index + 1}`).join(", ");
     const query = `UPDATE users SET ${setQuery} WHERE id=$${length + 1} RETURNING *`;
