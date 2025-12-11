@@ -49,7 +49,7 @@ vehicleControllers.getAllVehicles = async (req: Request, res: Response) => {
 vehicleControllers.getVehicleById = async (req: Request, res: Response) => {
     try {
         const vehicleId = req.params.id;
-        const result = await vehicleServices.getVehicleById(vehicleId);
+        const result = await vehicleServices.geVehicleById(vehicleId);
         sendResponse(res, 200, {
             success: true,
             message: "Vehicle retrieved successfully!",
