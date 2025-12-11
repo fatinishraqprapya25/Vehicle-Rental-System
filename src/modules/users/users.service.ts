@@ -28,4 +28,9 @@ usersServices.updateUser = async (userId: string, userData: OptionalUser) => {
     return result.rows[0];
 }
 
+usersServices.deleteUser = async (userId: string) => {
+    const result = await pool.query(`DELETE FROM users WHERE id=$1`, [userId]);
+    return result;
+}
+
 export default usersServices;
