@@ -29,6 +29,22 @@ vehicleControllers.createVehicle = async (req: Request, res: Response) => {
     }
 }
 
+vehicleControllers.getAllVehicles = async (req: Request, res: Response) => {
+    try {
+        const result = await vehicleServices.getAllVehicles();
+        sendResponse(res, 200, {
+            success: true,
+            message: "Vehicle Retrieved Successfully!",
+            data: result
+        });
+    } catch (error: any) {
+        sendResponse(res, 500, {
+            success: false,
+            message: error.message,
+            error
+        });
+    }
+}
 
 
 export default vehicleControllers;
