@@ -7,9 +7,8 @@ const bookingControllers: any = {};
 bookingControllers.createBooking = async (req: Request, res: Response) => {
     try {
         const bookingData = req.body;
-        const customer_id = req.user!.id;
-        const { vehicle_id, rent_start_at, rent_end_at } = bookingData;
-        if (!customer_id || !vehicle_id || !rent_start_at || !rent_end_at) {
+        const { customer_id, vehicle_id, rent_start_date, rent_end_date } = bookingData;
+        if (!customer_id || !vehicle_id || !rent_start_date || !rent_end_date) {
             return sendResponse(res, 400, {
                 success: false,
                 message: "Please provide proper informations to book vehicle!"

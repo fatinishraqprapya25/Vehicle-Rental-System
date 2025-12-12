@@ -7,30 +7,30 @@ interface Booking {
     id: string;
     customer_id: string;
     vehicle_id: string;
-    rent_start_at: Date;
-    rent_end_at: Date;
+    rent_start_date: Date;
+    rent_end_date: Date;
     total_price: number;
     status: "active" | "booked" | "returned";
 }
 
 bookingServices.createBooking = async (bookingData: Booking) => {
-    const { customer_id, vehicle_id, rent_start_at, rent_end_at, status } = bookingData;
+    const { customer_id, vehicle_id, rent_start_date, rent_end_date } = bookingData;
 
     // calculate days of rent
-    const start = new Date(rent_start_at);
-    const end = new Date(rent_end_at);
-    const difference = end.getTime() - start.getDate();
+    const start = new Date(rent_start_date);
+    const end = new Date(rent_end_date);
+    const difference = end.getTime() - start.getTime();
     const days = difference / (24 * 60 * 60 * 1000);
 
-
     const vehicle = await vehicleServices.geVehicleById(vehicle_id);
-    const total_price = days * vehicle.daily_rent_price;
+
+    const total_price = days * Number(vehicle.daily_rent_price);
 
     const result = await pool.query(`
-        INSERT INTO bookings(customer_id, vehicle_id, rent_start_at, rent_end_at, total_price, status) VALUES($1, $2, $3, $4, $5, $6)`,
-        [customer_id, vehicle_id, rent_start_at, rent_end_at, total_price, status]
+        INSERT INTO bookings(customer_id, vehicle_id, rent_start_date, rent_end_date, total_price, status) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
+        [customer_id, vehicle_id, rent_start_date, rent_end_date, total_price, "active"]
     );
-    return result;
+    return result.rows[0];
 }
 
 bookingServices.getAllBookings = async () => {
