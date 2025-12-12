@@ -21,4 +21,14 @@ bookingServices.createBooking = async (bookingData: Booking) => {
     return result;
 }
 
+bookingServices.getAllBookings = async () => {
+    const result = await pool.query(`SELECT * FROM bookings`);
+    return result.rows;
+}
+
+bookingServices.getAllCustomersBookings = async (customerId: string) => {
+    const result = await pool.query(`SELECT * FROM bookings WHERE customer_id=$1`, [customerId]);
+    return result.rows;
+}
+
 export default bookingServices;
