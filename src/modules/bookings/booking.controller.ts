@@ -14,7 +14,7 @@ bookingControllers.createBooking = async (req: Request, res: Response) => {
                 message: "Please provide proper informations to book vehicle!"
             });
         }
-        const result = await bookingServices.createBooking(bookingData);
+        const result = await bookingServices.createBooking({ ...bookingData, customer_id });
         sendResponse(res, 201, {
             success: true,
             message: "Booking created successfully!",
