@@ -17,7 +17,7 @@ const checkAdmin = (req: Request, res: Response, next: NextFunction) => {
         return showUnauthenciatedMsg(res, "Invalid token!");
     }
     if (decoded.role !== "admin") {
-        return showUnauthenciatedMsg(res, "Access denied!");
+        return showUnauthenciatedMsg(res, "Access denied!", 403);
     }
     req.user = decoded;
     next();
