@@ -31,6 +31,11 @@ bookingServices.getAllCustomersBookings = async (customerId: string) => {
     return result.rows;
 }
 
+bookingServices.getBookingById = async (bookingId: string) => {
+    const result = await pool.query(`SELECT * FROM bookings WHERE id=$1`, [bookingId]);
+    return result.rows[0];
+}
+
 bookingServices.updateBooking = async (bookingId: string, bookingData: Partial<Booking>) => {
     const keys = Object.keys(bookingData);
     const values = Object.values(bookingData);
