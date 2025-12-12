@@ -6,7 +6,7 @@ import showUnauthenciatedMsg from "../utils/showUnauthenticatedMsg";
 const checkUser = async (req: Request, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
     if (!authorization) {
-        return showUnauthenciatedMsg(res, "User must be logged in");
+        return showUnauthenciatedMsg(res, "Please provide an authorization token!");
     }
     const tokenParts = authorization.split(" ");
     if (tokenParts[0] !== "Bearer" || !tokenParts[1]) {
