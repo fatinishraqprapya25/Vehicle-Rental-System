@@ -1,4 +1,5 @@
 import { pool } from "../../config/db";
+import vehicleServices from "../vehicles/vehicles.service";
 
 const bookingServices: any = {};
 
@@ -13,7 +14,18 @@ interface Booking {
 }
 
 bookingServices.createBooking = async (bookingData: Booking) => {
-    const { customer_id, vehicle_id, rent_start_at, rent_end_at, total_price, status } = bookingData;
+    const { customer_id, vehicle_id, rent_start_at, rent_end_at, status } = bookingData;
+
+    // calculate days of rent
+    const start = new Date(rent_start_at);
+    const end = new Date(rent_end_at);
+    const difference = end.getTime() - start.getDate();
+    const days = difference / (24 * 60 * 60 * 1000);
+
+
+    const vehicle = await vehicleServices.geVehicleById(vehicle_id);
+    const total_price = days * vehicle.daily_rent_price;
+
     const result = await pool.query(`
         INSERT INTO bookings(customer_id, vehicle_id, rent_start_at, rent_end_at, total_price, status) VALUES($1, $2, $3, $4, $5, $6)`,
         [customer_id, vehicle_id, rent_start_at, rent_end_at, total_price, status]
