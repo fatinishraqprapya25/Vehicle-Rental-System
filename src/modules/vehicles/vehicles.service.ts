@@ -1,4 +1,5 @@
 import { pool } from "../../config/db";
+import AppError from "../../utils/AppError";
 
 const vehicleServices: any = {};
 
@@ -44,10 +45,14 @@ vehicleServices.updateVehicle = async (vehicleId: string, vehicleData: OptionalV
 }
 
 vehicleServices.deleteVehicle = async (vehicleId: string) => {
-    const result = await pool.query(`
+    const checkBooking = await pool.query(`SELECT * FROM bookings WHERE vehicle_id=$1`, [vehicleId]);
+    if (checkBooking.rowCount === 0 && checkBooking.rows[0].status !== "returned") {
+        const result = await pool.query(`
         DELETE FROM vehicles WHERE id=$1
         `, [vehicleId]);
-    return result;
+        return result;
+    }
+    throw new AppError(400, "Cannot delete vehicle untill the vehicle is returned.");
 }
 
 export default vehicleServices;
