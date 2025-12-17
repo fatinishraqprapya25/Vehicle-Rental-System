@@ -37,7 +37,7 @@ bookingServices.createBooking = async (bookingData: Booking) => {
     );
 
     // change vehicle status
-    await pool.query(`UPDARTE vehicles SET availability_status=$1 WHERE id=$2`, ["booked", vehicle_id]);
+    await pool.query(`UPDATE vehicles SET availability_status=$1 WHERE id=$2`, ["booked", vehicle_id]);
 
     return result.rows[0];
 }
