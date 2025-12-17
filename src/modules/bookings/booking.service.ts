@@ -11,7 +11,7 @@ interface Booking {
     rent_start_date: Date;
     rent_end_date: Date;
     total_price: number;
-    status: "active" | "booked" | "returned";
+    status: "active" | "cancelled" | "returned";
 }
 
 bookingServices.createBooking = async (bookingData: Booking) => {
@@ -24,7 +24,7 @@ bookingServices.createBooking = async (bookingData: Booking) => {
     const days = difference / (24 * 60 * 60 * 1000);
 
     const vehicle = await vehicleServices.geVehicleById(vehicle_id);
-    if (vehicle.availability_status === "booked") {
+    if (vehicle.availability_status === "active") {
         throw new AppError(400, "Vehicle is already booked!");
     }
 
@@ -63,6 +63,12 @@ bookingServices.updateBooking = async (bookingId: string, bookingData: Partial<B
     if (keys.length === 0) {
         return null;
     }
+    // change vehicle status
+    if (keys.includes("status") && (values.includes("returned") || values.includes("cancelled"))) {
+        const bookingData = await pool.query('SELECT * FROM bookings WHERE id=$1', [bookingId]);
+        await pool.query(`UPDATE vehicles SET availability_status=$1 WHERE id=$2`, ["available", bookingData.rows[0].vehicle_id]);
+    }
+
     const setQuery = Object.keys(bookingData).map((key, index) => `${key}=$${index + 1}`).join(", ");
     const query = `UPDATE bookings SET ${setQuery} WHERE id=$${keys.length + 1} RETURNING *`;
     const result = await pool.query(query, [...values, bookingId]);
