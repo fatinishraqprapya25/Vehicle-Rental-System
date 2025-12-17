@@ -1,4 +1,5 @@
 import { pool } from "../../config/db";
+import AppError from "../../utils/AppError";
 import vehicleServices from "../vehicles/vehicles.service";
 
 const bookingServices: any = {};
@@ -23,13 +24,21 @@ bookingServices.createBooking = async (bookingData: Booking) => {
     const days = difference / (24 * 60 * 60 * 1000);
 
     const vehicle = await vehicleServices.geVehicleById(vehicle_id);
+    if (vehicle.availability_status === "booked") {
+        throw new AppError(400, "Vehicle is already booked!");
+    }
 
     const total_price = days * Number(vehicle.daily_rent_price);
 
+    // create booking
     const result = await pool.query(`
         INSERT INTO bookings(customer_id, vehicle_id, rent_start_date, rent_end_date, total_price, status) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
         [customer_id, vehicle_id, rent_start_date, rent_end_date, total_price, "active"]
     );
+
+    // change vehicle status
+    await pool.query(`UPDARTE vehicles SET availability_status=$1 WHERE id=$2`, ["booked", vehicle_id]);
+
     return result.rows[0];
 }
 
